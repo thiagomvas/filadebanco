@@ -4,7 +4,8 @@
 #include "pessoa.h"
 
 int main() {
-    srand(rand()); 
+    srand(rand()); // Gera uma seed aleatoria pro RNG
+
     Pessoa *pessoa = (Pessoa*)malloc(sizeof(Pessoa));
     if (pessoa == NULL) {
         perror("Falhou a alocação");
