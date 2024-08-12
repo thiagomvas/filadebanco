@@ -25,5 +25,7 @@ int intAleatorio(int min, int max);
 // Função de geração de pessoa com dados aleatorios
 void gerarPessoa(Pessoa *pessoa);
 
+// Função para exibir pessoa
+void exibirPessoa(Pessoa *pessoa); 
 #endif // PESSOA_H
 

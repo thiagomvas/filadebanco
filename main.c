@@ -16,11 +16,7 @@ int main() {
     {
         printf("========================\n");
         gerarPessoa(pessoa);
-        printf("Nome: %s\n", pessoa->Nome);
-        printf("CPF: %s\n", pessoa->CPF);
-        printf("Idade: %d\n", pessoa->Idade);
-        printf("Deficiente: %d\n", pessoa->Deficiente);
-
+        exibirPessoa(pessoa);
     }
     free(pessoa);
 

@@ -36,3 +36,10 @@ void gerarPessoa(Pessoa *pessoa)
     pessoa->Deficiente = rand() % 2;
 }
 
+void exibirPessoa(Pessoa *pessoa)
+{
+    printf("Nome: %s\n", pessoa->Nome);
+    printf("CPF: %s\n", pessoa->CPF);
+    printf("Idade: %d\n", pessoa->Idade);
+    printf("Deficiente: %d\n", pessoa->Deficiente);
+}
