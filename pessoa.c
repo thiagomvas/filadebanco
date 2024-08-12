@@ -19,8 +19,8 @@ int intAleatorio(int min, int max)
 void gerarPessoa(Pessoa *pessoa)
 {
     char *nome = nomes[intAleatorio(0, NUM_NOMES - 1)];
-    char *sobrenome1 = nomes[intAleatorio(0, NUM_SOBRENOMES - 1)];
-    char *sobrenome2 = nomes[intAleatorio(0, NUM_SOBRENOMES - 1)];
+    char *sobrenome1 = sobrenomes[intAleatorio(0, NUM_SOBRENOMES - 1)];
+    char *sobrenome2 = sobrenomes[intAleatorio(0, NUM_SOBRENOMES - 1)];
     int idade = intAleatorio(MIN_IDADE, MAX_IDADE);
     char cpf[TAMANHO_CPF];
     for(int i = 0; i < TAMANHO_CPF - 1; i++)
