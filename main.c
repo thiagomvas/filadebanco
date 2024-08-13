@@ -2,36 +2,33 @@
 #include <stdlib.h>
 #include <string.h>
 #include "pessoa.h"
+#include <time.h>
 
-typedef struct Pessoa{ // especificação do nó da fila
-char nome[30];
-char cpf[12];
-int idade;
-int deficiente;
-struct Pessoa* prox;} No;
 
 typedef struct gerenciaFila{ // Nó cabeça
   No* inicio;
-  No* fim;}fila;
+  No* fim;
+  int quant;}Fila;
 
 //Cria nó do tipo de Cliente
-No* criarNo(char nome[], char cpf[],int idade, int deficiente){
+No* criarNo(No* pessoa){
   No* novoCliente=(No*)malloc(sizeof(No));
-  strcpy(novoCliente->nome,nome);
-  strcpy(novoCliente->cpf,cpf);
-  novoCliente->idade=idade;
-  novoCliente->deficiente=deficiente;
+  strcpy(novoCliente->nome,pessoa->nome);
+  strcpy(novoCliente->cpf,pessoa->cpf);
+  novoCliente->idade=pessoa->idade;
+  novoCliente->deficiente=pessoa->deficiente;
   novoCliente->prox=NULL;
   return novoCliente;
 }
 
-void inicializaFila(fila* fila){
+void inicializaFila(Fila* fila){
   fila->inicio=NULL;
   fila->fim=NULL;
+  fila->quant = 0;
 }
 
-void enfileirar(fila* fila, char nome[], char cpf[], int idade, int deficiente){
-  No* novoCliente=criarNo(nome, cpf, idade, deficiente);
+void enfileirar(Fila* fila, No* pessoa){
+  No* novoCliente=criarNo(pessoa);
   if(novoCliente==NULL){
     printf("Falha na alocação\n");
     return;
@@ -39,17 +36,39 @@ void enfileirar(fila* fila, char nome[], char cpf[], int idade, int deficiente){
   if(fila->inicio==NULL){ //caso fila esteja vazia
     fila->inicio=novoCliente;
     fila->fim=novoCliente;
+    fila->quant++;
   }
   else{
     fila->fim->prox=novoCliente;// caso fila já tenha alguém
     fila->fim=novoCliente;
+    fila->quant++;
   }
 }
 
-int main() {
-    srand(rand()); // Gera uma seed aleatoria pro RNG
+void exibirFila(Fila* fila){
+ No *tempPessoa = fila->inicio;
+ while(tempPessoa != NULL){
+    exibirPessoa(tempPessoa);
+    tempPessoa = tempPessoa->prox;
+  }
+ }
+ void sairDaFila(Fila* fila){
+  No *primeiroNo = fila->inicio;
+  fila->inicio = primeiroNo->prox;
+  free(primeiroNo);
+  fila->quant--;
+ }
 
-    Pessoa *pessoa = (Pessoa*)malloc(sizeof(Pessoa));
+int main() {
+    srand(time(0)); // Gera uma seed aleatoria pro RNG
+    
+    Fila filaSemPrioridade;
+    Fila filaComPrioridade;
+
+    inicializaFila(&filaSemPrioridade);
+    inicializaFila(&filaComPrioridade);
+
+    No *pessoa = (No*)malloc(sizeof(No));
     if (pessoa == NULL) {
         perror("Falhou a alocação");
         return 1;
@@ -57,12 +76,24 @@ int main() {
 
     for(int i = 0; i < 5; i++)
     {
-        printf("========================\n");
+        
         gerarPessoa(pessoa);
-        exibirPessoa(pessoa);
-    }
-    free(pessoa);
+        criarNo(pessoa);
+        if(pessoa->deficiente == 0)
+          enfileirar(&filaSemPrioridade,pessoa);
+        else
+          enfileirar(&filaComPrioridade,pessoa);
 
+        
+        
+    }
+    printf("=========================\n");
+    printf("Fila com prioridade: \n");
+    exibirFila(&filaComPrioridade);
+    printf("=========================\n");
+    printf("Fila sem prioridade: \n");
+    exibirFila(&filaSemPrioridade);
+    printf("=========================\n");
     return 0;
 }
 

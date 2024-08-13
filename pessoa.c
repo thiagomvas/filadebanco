@@ -11,12 +11,12 @@ char *sobrenomes[NUM_SOBRENOMES] = { "Oliveira", "Silva", "Cardoso", "Santos", "
 
 // Gera um inteiro aleatorio de min a max (inclusivo)
 int intAleatorio(int min, int max)
-{
+{   
     return min + rand() % (max - min + 1); // Max Inclusivo
 }
 
 // Gera dados aleatorios para uma dada pessoa
-void gerarPessoa(Pessoa *pessoa)
+void gerarPessoa(No *pessoa)
 {
     char *nome = nomes[intAleatorio(0, NUM_NOMES - 1)];
     char *sobrenome1 = sobrenomes[intAleatorio(0, NUM_SOBRENOMES - 1)];
@@ -29,17 +29,17 @@ void gerarPessoa(Pessoa *pessoa)
     }
     cpf[TAMANHO_CPF - 1] = '\0';
 
-    snprintf(pessoa->Nome, TAMANHOMAX_NOME, "%s %s %s", nome, sobrenome1, sobrenome2);
-    snprintf(pessoa->CPF, TAMANHO_CPF, "%s", cpf);
+    snprintf(pessoa->nome, TAMANHOMAX_NOME, "%s %s %s", nome, sobrenome1, sobrenome2);
+    snprintf(pessoa->cpf, TAMANHO_CPF, "%s", cpf);
 
-    pessoa->Idade = idade;
-    pessoa->Deficiente = rand() % 2;
+    pessoa->idade = idade;
+    pessoa->deficiente = rand() % 2;
 }
 
-void exibirPessoa(Pessoa *pessoa)
+void exibirPessoa(No *pessoa)
 {
-    printf("Nome: %s\n", pessoa->Nome);
-    printf("CPF: %s\n", pessoa->CPF);
-    printf("Idade: %d\n", pessoa->Idade);
-    printf("Deficiente: %d\n", pessoa->Deficiente);
+    printf("Nome: %s\n", pessoa->nome);
+    printf("CPF: %s\n", pessoa->cpf);
+    printf("Idade: %d\n", pessoa->idade);
+    printf("Deficiente: %d\n", pessoa->deficiente);
 }

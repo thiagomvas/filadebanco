@@ -12,20 +12,21 @@ extern char *nomes[NUM_NOMES]; 		// Array de nomes aleatorios
 extern char *sobrenomes[NUM_SOBRENOMES];// Array de sobrenomes aleatorios
 
 // Tipo de cada pessoa na fila
-typedef struct {
-    char Nome[TAMANHOMAX_NOME];
-    char CPF[TAMANHO_CPF];
-    int Idade;
-    int Deficiente;
-} Pessoa;
+typedef struct Pessoa{ // especificação do nó da fila
+char nome[30];
+char cpf[12];
+int idade;
+int deficiente;
+struct Pessoa* prox;
+} No;
 
 // Função de geração de ints aleatorios entre min e max(inclusivo)
 int intAleatorio(int min, int max);
 
 // Função de geração de pessoa com dados aleatorios
-void gerarPessoa(Pessoa *pessoa);
+void gerarPessoa(No *pessoa);
 
 // Função para exibir pessoa
-void exibirPessoa(Pessoa *pessoa); 
+void exibirPessoa(No *pessoa); 
 #endif // PESSOA_H
 
