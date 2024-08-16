@@ -79,6 +79,32 @@ void exibirFila(Fila* fila){
   free(primeiroNo);
   fila->quant--;
  }
+ 
+ int quantoTempo(Fila *filaPrioridade,Fila *filaNormal,No *pessoa){
+	 int prioridade=pessoa->idade>=60||pessoa->deficiente;
+	 if(prioridade){
+		 int c=0;
+		 noAtual=filaPrioridade->inicio;
+		 while(noAtual!=pessoa){
+			 noAtual=noAtual->prox;
+			 c++;
+		 }
+		 int quantnormal=filaNormal->quant;
+		 int quantnormal=quantnormal>c/2?c/2:quantnormal;
+		 return c+quantnormal;
+	 }
+	else{
+		int c=0;
+		noAtual=filaNormal->inicio;
+		 while(noAtual!=pessoa){
+			 noAtual=noAtual->prox;
+			 c++;
+		 }
+		 int quantprio=filaPrioridade->quant;
+		 int quantprio=quantprio>2*c?2*c:quantprio;
+		 return c+quantprio;
+	}
+ }
 
 //Atende os clientes conforme a prioridade.
  void atendimentoCliente(Fila* fila, Fila* filaPrioridade, Fila* filaUsual, Caixa vetorCaixas[]){
