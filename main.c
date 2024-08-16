@@ -21,10 +21,22 @@ No* criarNo(No* pessoa){
   return novoCliente;
 }
 
+//Cria estrutura para o caixa;
+typedef struct RecebeCliente{
+  int clientesAtendidos;
+}Caixa;
+
 void inicializaFila(Fila* fila){
   fila->inicio=NULL;
   fila->fim=NULL;
   fila->quant = 0;
+}
+
+//Prepara os caixas para recebimentos dos clientes.
+void inicializaCaixa(Caixa vetorCaixas[]){
+  for(int contador = 0; contador < 5; contador++){
+    vetorCaixas[contador].clientesAtendidos = 0;
+  }
 }
 
 void enfileirar(Fila* fila, No* pessoa){
@@ -68,14 +80,52 @@ void exibirFila(Fila* fila){
   fila->quant--;
  }
 
+//Atende os clientes conforme a prioridade.
+ void atendimentoCliente(Fila* fila, Fila* filaPrioridade, Fila* filaUsual, Caixa vetorCaixas[]){
+  if(fila->inicio == NULL){
+    printf("Nenhum cliente a ser atendido no momento.");
+    return;
+  }
+
+  int contaPrioridade = 0, contAuxiliar = 0;
+  No *aux1 = filaPrioridade -> inicio;
+  No *aux2 = filaUsual -> inicio;
+
+  while(filaPrioridade->quant > 0 || filaUsual->quant > 0){
+    //Atende primeiramente os clientes que são prioridade na fila.
+    if(filaPrioridade->quant > 0 && contaPrioridade != 2){
+      printf("Cliente (PRIORIDADE) a ser atendido: %s.\n", aux1->nome);
+      printf("Dirigir-se ao caixa de numero: %d.\n", contAuxiliar % 5 + 1);
+      vetorCaixas[contAuxiliar % 5].clientesAtendidos++;
+      sairDaFila(filaPrioridade);
+      contaPrioridade++;
+      aux1 = filaPrioridade -> inicio;
+    }
+    else{
+      printf("Cliente a ser atendido: %s.\n", aux2->nome);
+      printf("Dirigir-se ao caixa de numero: %d.\n", contAuxiliar % 5 + 1);
+      vetorCaixas[contAuxiliar % 5].clientesAtendidos++;
+      sairDaFila(filaUsual);
+      contaPrioridade = 0;
+      aux2 = filaUsual -> inicio;
+    }
+    contAuxiliar++;
+  }
+
+  printf("Atendimento concluido.");
+
+ }
+
 int main() {
     srand(time(0)); // Gera uma seed aleatoria pro RNG
     
     Fila filaSemPrioridade;
     Fila filaComPrioridade;
+    Caixa caixas[5];
 
     inicializaFila(&filaSemPrioridade);
     inicializaFila(&filaComPrioridade);
+    inicializaCaixa(caixas);
 
     No *pessoa = (No*)malloc(sizeof(No));
     if (pessoa == NULL) {
