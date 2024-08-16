@@ -138,7 +138,11 @@ void exibirFila(Fila* fila){
     contAuxiliar++;
   }
 
-  printf("Atendimento concluido.");
+  printf("Atendimento concluido:\n");
+  printf("Numero total de clientes atendidos: %d.\n", contAuxiliar);
+  for(int contador = 1; contador <= 5; contador++){
+    printf("CLIENTES ATENDIDOS PELO CAIXA 0%d: %d.\n", contador, vetorCaixas[contador].clientesAtendidos);
+  }
 
  }
 
