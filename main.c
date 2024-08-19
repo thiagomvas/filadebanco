@@ -40,7 +40,7 @@ void inicializaCaixa(Caixa vetorCaixas[]){
 }
 
 void enfileirar(Fila* fila, No* pessoa){
-  No* novoCliente=criarNo(pessoa);
+  No* novoCliente=pessoa;
   if(novoCliente==NULL){
     printf("Falha na alocação\n");
     return;
@@ -145,8 +145,51 @@ void exibirFila(Fila* fila){
   }
 
  }
+ 
+ void combinarFila(Fila filaComPrioridade, Fila filaSemPrioridade,int prioridadeAtendidos,Fila *resultado){
+	Fila novaFila;
+	if(filaComPrioridade.quant==0)
+		*resultado=filaSemPrioridade;
+		return;
+	if(filaSemPrioridade.quant==0)
+		*resultado=filaComPrioridade;
+		return;
+	novaFila.inicio=NULL;
+	novaFila.fim=NULL;
+	novaFila.quant=0;
+	int c=prioridadeAtendidos;
+	No *semPriorAtual=filaSemPrioridade.inicio;
+	No *comPriorAtual=filaComPrioridade.inicio;
+	while(semPriorAtual!=NULL && comPriorAtual!=NULL){
+		if(c==2){
+			enfileirar(&novaFila,semPriorAtual);
+			c=0;
+			semPriorAtual=semPriorAtual->prox;
+		}
+		else{
+			enfileirar(&novaFila,comPriorAtual);
+			c++;
+			comPriorAtual=comPriorAtual->prox;
+		}
+	}
+	if(semPriorAtual==NULL){
+		while(comPriorAtual!=NULL){
+			enfileirar(&novaFila,comPriorAtual);
+			comPriorAtual=comPriorAtual->prox;
+		}
+	}
+	if(comPriorAtual==NULL){
+		while(semPriorAtual!=NULL){
+			enfileirar(&novaFila,semPriorAtual);
+			semPriorAtual=semPriorAtual->prox;
+		}
+	}
+	*resultado=novaFila;
+	
+}
 
 int main() {
+	
     srand(time(0)); // Gera uma seed aleatoria pro RNG
     
     Fila filaSemPrioridade;
@@ -157,21 +200,17 @@ int main() {
     inicializaFila(&filaComPrioridade);
     inicializaCaixa(caixas);
 
-    No *pessoa = (No*)malloc(sizeof(No));
+   
+
+    for(int i = 0; i < 5; i++)
+    {
+         No *pessoa = (No*)malloc(sizeof(No));
     if (pessoa == NULL) {
         perror("Falhou a alocação");
         return 1;
     }
-
-    for(int i = 0; i < 5; i++)
-    {
-        
         gerarPessoa(pessoa);
-        criarNo(pessoa);
-        if(pessoa->deficiente == 0)
-          enfileirar(&filaSemPrioridade,pessoa);
-        else
-          enfileirar(&filaComPrioridade,pessoa);
+        cadastrar(&filaSemPrioridade,&filaComPrioridade,pessoa);
 
         
         
@@ -183,13 +222,15 @@ int main() {
     printf("Fila sem prioridade: \n");
     exibirFila(&filaSemPrioridade);
     printf("=========================\n");
-	/*
+	
+	
 	int op=0;
+	int prioridadeAtendidos=0;
 	do{
 		printf("1-Cadastrar cliente na fila\n2-Exibir fila\n3-Chamar cliente para atendimento\n4-Exibir quantitativo de clientes atendidos por cada caixa\n5-Sair");
 		scanf("%d",&op);
 		switch(op){
-			case 1:
+			case 1:;
 			char nome[30];
 			char cpf[12];
 			int idade,deficiente;
@@ -204,13 +245,17 @@ int main() {
 			No *pessoa=criarNo(nome,cpf,idade,deficiente);
 			cadastrar(&filaSemPrioridade,&filaComPrioridade,pessoa);
 			break;
-			case 2:break;
+			case 2:;
+			Fila novaFila;
+			combinarFila(filaComPrioridade,filaSemPrioridade,prioridadeAtendidos,&novaFila);
+			exibirFila(&novaFila);
+			break;
 			case 3:break;
 			case 4:break;
 		}
 	}
-	while(op!=5)
-	*/
+	while(op!=5);
+
     return 0;
 }
 
