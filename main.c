@@ -53,11 +53,12 @@ void exibirFila(Fila* fila) {
         tempPessoa = tempPessoa->prox;
     }
 }
-void sairDaFila(Fila* fila) {
+No* sairDaFila(Fila* fila) {
     No* primeiroNo = fila->inicio;
     fila->inicio = primeiroNo->prox;
-    free(primeiroNo);
     fila->quant--;
+    return primeiroNo;
+
 }
 
 void limparConsole()
@@ -84,12 +85,23 @@ int main() {
         return 1;
     }
 
+    for (int i = 0; i < 10; i++)
+    {
+        gerarPessoa(pessoa);
+
+		if (pessoa->deficiente == 1 || pessoa->idade >= 60)
+			enfileirar(&filaComPrioridade, pessoa);
+		else
+			enfileirar(&filaSemPrioridade, pessoa);
+    }
+
 
     int op = 0;
 	char nome[TAMANHOMAX_NOME];
 	char cpf[TAMANHO_CPF];
 	int idade;
 	int deficiente;
+    int caixa = 0;
 
     int prefAtendidos = 0;
 
@@ -132,20 +144,28 @@ int main() {
 		}
 		else if (op == 2)
 		{
+            printf("Caixa chamando: ");
+			scanf("%d", &caixa);
+
             if (prefAtendidos < 2 && filaComPrioridade.quant > 0)
             {
-				sairDaFila(&filaComPrioridade);
+				pessoa = sairDaFila(&filaComPrioridade);
 				prefAtendidos++;
 			}
             else if (filaSemPrioridade.quant > 0)
             {
-				sairDaFila(&filaSemPrioridade);
+				pessoa = sairDaFila(&filaSemPrioridade);
                 prefAtendidos = 0;
 			}
-            else
+
+            if (pessoa != NULL)
             {
-				printf("Fila vazia\n");
-			}
+				printf("'%s' está sendo atendido no caixa %d\n", pessoa->nome, caixa);
+            }
+			else
+			{
+                printf("Ninguém na fila\n");
+            }
 		}
 		else if (op == 3)
 		{
