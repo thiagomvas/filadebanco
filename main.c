@@ -152,11 +152,11 @@ void finalizarExpediente(int contAuxiliar, Caixa vetorCaixas[]){
 	if(filaComPrioridade.quant==0){
 		*resultado=filaSemPrioridade;
 		return;
-  }
+	}
 	if(filaSemPrioridade.quant==0){
 		*resultado=filaComPrioridade;
 		return;
-  }
+	}
 	novaFila.inicio=NULL;
 	novaFila.fim=NULL;
 	novaFila.quant=0;
@@ -233,38 +233,38 @@ int main() {
 		printf("1-Cadastrar cliente na fila\n2-Exibir fila\n3-Chamar cliente para atendimento\n4-Exibir quantitativo de clientes atendidos por cada caixa\n5-Sair");
 		scanf("%d",&op);
 		switch(op){
-			case 1:;
-        char nome[30];
-        char cpf[12];
-        int idade,deficiente;
-        printf("Insira o nome do cliente\n");
-        gets(nome);
-        printf("Insira o CPF do cliente\n");
-        gets(cpf);
-        printf("Insira a idade do cliente\n");
-        scanf("%d",&idade);
-        printf("Insira 1 se o cliente for deficiente, senão insira 0\n");
-        scanf("%d",&deficiente);
-        No *pessoa=criarNo(nome,cpf,idade,deficiente);
-        cadastrar(&filaSemPrioridade,&filaComPrioridade,pessoa);
-        break;
-			case 2:;
-        Fila novaFila;
-        combinarFila(filaComPrioridade,filaSemPrioridade,prioridadeAtendidos,&novaFila);
-        exibirFila(&novaFila);
-        break;
-			case 3:
-        atendimentoCliente(&filaComPrioridade, &filaSemPrioridade, caixas, &contAuxiliar, &contPrioridade);
-        break;
-			case 4:
-        break;
-      case 5:
-        finalizarExpediente(contAuxiliar, caixas);
-        break;
-      default:
-        printf("Erro: Escolha uma opcao valida. Por gentileza\n");
+		case 1:;
+		        char nome[30];
+		        char cpf[12];
+		        int idade,deficiente;
+		        printf("Insira o nome do cliente\n");
+		        gets(nome);
+		        printf("Insira o CPF do cliente\n");
+		        gets(cpf);
+		        printf("Insira a idade do cliente\n");
+		        scanf("%d",&idade);
+		        printf("Insira 1 se o cliente for deficiente, senão insira 0\n");
+		        scanf("%d",&deficiente);
+		        No *pessoa=criarNo(nome,cpf,idade,deficiente);
+		        cadastrar(&filaSemPrioridade,&filaComPrioridade,pessoa);
+		        break;
+		case 2:;
+		        Fila novaFila;
+		        combinarFila(filaComPrioridade,filaSemPrioridade,prioridadeAtendidos,&novaFila);
+		        exibirFila(&novaFila);
+		        break;
+		case 3:
+	        	atendimentoCliente(&filaComPrioridade, &filaSemPrioridade, caixas, &contAuxiliar, &contPrioridade);
+	        	break;
+		case 4:
+	        	break;
+	      	case 5:
+	        	finalizarExpediente(contAuxiliar, caixas);
+	        	break;
+	      	default:
+	        	printf("Erro: Escolha uma opcao valida. Por gentileza\n");
 		}
-    system("pause");
+    		system("pause");
 	}
 	while(op!=5);
 
