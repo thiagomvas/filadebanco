@@ -84,29 +84,84 @@ int main() {
         return 1;
     }
 
-    for (int i = 0; i < 5; i++)
+
+    int op = 0;
+	char nome[TAMANHOMAX_NOME];
+	char cpf[TAMANHO_CPF];
+	int idade;
+	int deficiente;
+
+    int prefAtendidos = 0;
+
+
+
+    while (op != 4)
     {
-
-        gerarPessoa(pessoa);
-        criarNo(pessoa);
-        if (pessoa->deficiente == 0)
-            enfileirar(&filaSemPrioridade, pessoa);
-        else
-            enfileirar(&filaComPrioridade, pessoa);
-
+		printf("1 - Adicionar pessoa na fila\n");
+		printf("2 - Remover pessoa da fila\n");
+		printf("3 - Exibir fila\n");
+		printf("4 - Sair\n");
+		scanf("%d", &op);
+		limparConsole();
 
 
+        // Limpar o buffer do teclado
+        while (getchar() != '\n');
+
+		if (op == 1)
+		{
+            // Pedir dados para o usuário
+            printf("Digite o nome: ");
+            fgets(pessoa->nome, TAMANHOMAX_NOME, stdin);
+            pessoa->nome[TAMANHOMAX_NOME - 1] = '\0';
+            printf("Digite o CPF: ");
+            fgets(pessoa->cpf, TAMANHO_CPF, stdin);
+            pessoa->cpf[TAMANHO_CPF - 1] = '\0';
+            printf("Digite a idade: ");
+            scanf("%d", &idade);
+            printf("Deficiente (1 - Sim, 0 - Não): ");
+            scanf("%d", &deficiente);
+
+            pessoa->idade = idade;
+            pessoa->deficiente = deficiente;
+
+            if (pessoa->deficiente == 1 || pessoa->idade >= 60)
+                enfileirar(&filaComPrioridade, pessoa);
+            else
+                enfileirar(&filaSemPrioridade, pessoa);
+		}
+		else if (op == 2)
+		{
+            if (prefAtendidos < 2 && filaComPrioridade.quant > 0)
+            {
+				sairDaFila(&filaComPrioridade);
+				prefAtendidos++;
+			}
+            else if (filaSemPrioridade.quant > 0)
+            {
+				sairDaFila(&filaSemPrioridade);
+                prefAtendidos = 0;
+			}
+            else
+            {
+				printf("Fila vazia\n");
+			}
+		}
+		else if (op == 3)
+		{
+			printf("=========================\n");
+			printf("Fila com prioridade: \n");
+			exibirFila(&filaComPrioridade);
+			printf("=========================\n");
+			printf("Fila sem prioridade: \n");
+			exibirFila(&filaSemPrioridade);
+			printf("=========================\n");
+		}
+		else if (op == 4)
+		{
+			break;
+		}
     }
-    printf("=========================\n");
-    printf("Fila com prioridade: \n");
-    exibirFila(&filaComPrioridade);
-    printf("=========================\n");
-    printf("Fila sem prioridade: \n");
-    exibirFila(&filaSemPrioridade);
-    printf("=========================\n");
-
-
-    
 
 
     return 0;
