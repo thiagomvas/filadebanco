@@ -125,12 +125,12 @@ int main() {
 		scanf("%d", &op);
 		limparConsole();
 
-
 		// Limpar o buffer do teclado
 		while (getchar() != '\n');
 
-		if (op == 1)
+		switch (op)
 		{
+		case 1: // Cadastrar na fila
 			// Pedir dados para o usuário
 			printf("Digite o nome: ");
 			fgets(pessoa->nome, TAMANHOMAX_NOME, stdin);
@@ -150,9 +150,9 @@ int main() {
 				enfileirar(&filaComPrioridade, pessoa);
 			else
 				enfileirar(&filaSemPrioridade, pessoa);
-		}
-		else if (op == 2)
-		{
+			break;
+
+		case 2: // Chamar cliente
 			printf("Caixa chamando: ");
 			scanf("%d", &caixa);
 
@@ -181,10 +181,9 @@ int main() {
 			{
 				printf("Ninguém na fila\n");
 			}
+			break;
 
-		}
-		else if (op == 3)
-		{
+		case 3: // Exibir Fila
 			printf("=========================\n");
 			printf("Fila com prioridade: \n");
 			exibirFila(&filaComPrioridade);
@@ -192,13 +191,17 @@ int main() {
 			printf("Fila sem prioridade: \n");
 			exibirFila(&filaSemPrioridade);
 			printf("=========================\n");
-		}
-		else if (op == 4)
-		{
+			break;
+
+		case 4: // Sair do sistema
 			for (int i = 0; i < numCaixas; i++)
 			{
 				printf("Caixa %d atendeu %d pessoas\n", i, caixas[i]);
 			}
+			break;
+
+		default:
+			printf("Opção inválida! Tente novamente.\n");
 			break;
 		}
 	}
