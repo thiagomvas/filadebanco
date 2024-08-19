@@ -43,3 +43,23 @@ void exibirPessoa(No *pessoa)
     printf("Idade: %d\n", pessoa->idade);
     printf("Deficiente: %d\n", pessoa->deficiente);
 }
+
+No* criarPessoa(const char* nome, const char* cpf, int idade, int deficiente) {
+    // Aloca memória para um novo nó
+    No* novaPessoa = (No*)malloc(sizeof(No));
+    if (novaPessoa == NULL) {
+        perror("Erro ao alocar memória");
+        exit(EXIT_FAILURE);
+    }
+
+    // Inicializa os campos do novo nó
+    strncpy(novaPessoa->nome, nome, sizeof(novaPessoa->nome) - 1);
+    novaPessoa->nome[sizeof(novaPessoa->nome) - 1] = '\0';  // Garante terminação nula
+    strncpy(novaPessoa->cpf, cpf, sizeof(novaPessoa->cpf) - 1);
+    novaPessoa->cpf[sizeof(novaPessoa->cpf) - 1] = '\0';    // Garante terminação nula
+    novaPessoa->idade = idade;
+    novaPessoa->deficiente = deficiente;
+    novaPessoa->prox = NULL;
+
+    return novaPessoa;
+}
