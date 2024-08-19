@@ -88,13 +88,22 @@ int main() {
     for (int i = 0; i < 10; i++)
     {
         gerarPessoa(pessoa);
-
+    
 		if (pessoa->deficiente == 1 || pessoa->idade >= 60)
 			enfileirar(&filaComPrioridade, pessoa);
 		else
 			enfileirar(&filaSemPrioridade, pessoa);
     }
 
+
+    int numCaixas = 0;
+    printf("Numero de caixas: ");
+	scanf("%d", &numCaixas);
+
+	int* caixas = (int*)malloc(sizeof(int) * numCaixas);
+
+    for (int i = 0; i < numCaixas; i++)
+        caixas[i] = 0;
 
     int op = 0;
 	char nome[TAMANHOMAX_NOME];
@@ -157,15 +166,22 @@ int main() {
 				pessoa = sairDaFila(&filaSemPrioridade);
                 prefAtendidos = 0;
 			}
+            else if (filaComPrioridade.quant > 0)
+            {
+				pessoa = sairDaFila(&filaComPrioridade);
+				prefAtendidos++;
+            }
 
             if (pessoa != NULL)
             {
-				printf("'%s' está sendo atendido no caixa %d\n", pessoa->nome, caixa);
+                printf("'%s' está sendo atendido no caixa %d\n", pessoa->nome, caixa);
+                caixas[caixa]++;
             }
 			else
 			{
                 printf("Ninguém na fila\n");
             }
+
 		}
 		else if (op == 3)
 		{
@@ -179,6 +195,10 @@ int main() {
 		}
 		else if (op == 4)
 		{
+            for (int i = 0; i < numCaixas; i++)
+            {
+				printf("Caixa %d atendeu %d pessoas\n", i, caixas[i]);
+            }
 			break;
 		}
     }
