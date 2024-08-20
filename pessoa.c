@@ -36,6 +36,7 @@ void gerarPessoa(No *pessoa)
     pessoa->deficiente = rand() % 2;
 }
 
+// Exibe os dados de uma pessoa
 void exibirPessoa(No *pessoa)
 {
     printf("Nome: %s\n", pessoa->nome);
@@ -44,6 +45,18 @@ void exibirPessoa(No *pessoa)
     printf("Deficiente: %d\n", pessoa->deficiente);
 }
 
+//Cria nó do tipo de Cliente
+No* criarNo(No* pessoa) {
+    No* novoCliente = (No*)malloc(sizeof(No));
+    strcpy(novoCliente->nome, pessoa->nome);
+    strcpy(novoCliente->cpf, pessoa->cpf);
+    novoCliente->idade = pessoa->idade;
+    novoCliente->deficiente = pessoa->deficiente;
+    novoCliente->prox = NULL;
+    return novoCliente;
+}
+
+// Cria uma nova pessoa com os dados fornecidos
 No* criarPessoa(const char* nome, const char* cpf, int idade, int deficiente) {
     // Aloca memória para um novo nó
     No* novaPessoa = (No*)malloc(sizeof(No));

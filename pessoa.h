@@ -27,7 +27,11 @@ int intAleatorio(int min, int max);
 void gerarPessoa(No *pessoa);
 
 // Função para exibir pessoa
-void exibirPessoa(No *pessoa); 
-#endif // PESSOA_H
+void exibirPessoa(No *pessoa);
 
+// Função para criar pessoa
 No* criarPessoa(const char* nome, const char* cpf, int idade, int deficiente);
+
+// Função para criar nó
+No* criarNo(No* pessoa);
+#endif // PESSOA_H
