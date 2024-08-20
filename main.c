@@ -12,6 +12,7 @@ char nome[TAMANHOMAX_NOME];
 char cpf[TAMANHO_CPF];
 int caixa = 0;
 int prefAtendidos = 0;
+int totalPrioridade = 0, totalUsual = 0;
 
 //Cadastra a pessoa na fila de acordo com a prioridade
 void cadastar(Fila* filaSemPrioridade, Fila* filaComPrioridade, No* pessoa) {
@@ -94,6 +95,55 @@ void exibirPrevisao(Fila* filaComPrioridade, Fila* filaSemPrioridade, char nome[
 	printf("Pessoa com nome '%s' não encontrada na fila.\n", nome);
 }
 
+void atenderCliente(No *pessoa, Fila *filaComPrioridade, Fila *filaSemPrioridade,  int *caixas){
+	printf("Qual caixa estah chamando? ");
+	scanf("%d", &caixa);
+	limparConsole(); //Limpando a tela para exibição de dados.
+	
+	//Atende primeiramente os clientes que são prioridade na fila.
+	if (prefAtendidos < 2 && filaComPrioridade->quant > 0){
+		pessoa = sairDaFila(filaComPrioridade);
+		prefAtendidos++;
+		totalPrioridade++;
+	}
+	else if(filaSemPrioridade->quant > 0){//Atende uma pessoa com prioridade caso tenha e se duas pessoas prioridade forem atendidas
+		pessoa = sairDaFila(filaSemPrioridade);
+		prefAtendidos = 0;
+		totalUsual++;
+	}
+	else if (filaComPrioridade->quant > 0) {  // Se não tiver ninguem na fila sem prioridade, atender prioridade
+		pessoa = sairDaFila(filaComPrioridade);
+		prefAtendidos++;
+		totalPrioridade++;
+	}
+	else //Não há ninguem em ambas as filas;
+		pessoa = NULL;
+	
+	
+	if(pessoa != NULL){//Foi encontrado um cliente.
+		if (pessoa->deficiente || pessoa->idade >= 60){
+			printf("'%s(prioridade)' está sendo atendido(a) no caixa %d\n", pessoa->nome, caixa);
+		}
+		else{
+			printf("'%s' está sendo atendido(a) no caixa %d\n", pessoa->nome, caixa);
+		}
+		caixas[caixa]++;
+		free(pessoa);
+	}
+	else{//Não foi encontrado o cliente.
+		printf("Não há alguém na fila para ser chamado\n");
+	}
+}
+
+//Mostra os resultados do trabalho dos caixas no dia.
+void finalizaExpediente(int numeroCaixas, int *caixas){
+	printf("Expediente concluido: \n");
+	for (int i = 0; i < numeroCaixas; i++){
+		printf("Caixa %d atendeu %d pessoas\n", i + 1, caixas[i]);
+	}
+	printf("Total de clientes com prioridade atendidos: %d.\n", totalPrioridade);
+	printf("Total de clientes sem prioridade atendidos: %d.\n", totalUsual);
+}
 
 int main() {
 	srand(time(0)); // Gera uma seed aleatoria pro RNG
@@ -118,12 +168,12 @@ int main() {
 		caixas[i] = 0;
 
 	while (op != 6) {
-		printf("=========================================");
+		printf("=========================================\n");
 		printf("1 - Adicionar pessoa na fila (MANUAL)\n");
 		printf("2 - Adicionar pessoa na fila (AUTOMATICO)\n");
 		printf("3 - Remover pessoa da fila\n");
 		printf("4 - Exibir previsão\n");
-		printf("5 - Exibir ambas filas separadas");
+		printf("5 - Exibir ambas filas separadas\n");
 		printf("6 - Sair\n");
 		scanf("%d", &op);
 
@@ -181,34 +231,7 @@ int main() {
 
 
 		case 3: // Chamar cliente
-			printf("Caixa chamando: ");
-			scanf("%d", &caixa);
-			limparConsole();
-
-			// Se foram atendidos menos de 2 preferenciais e há preferenciais na fila
-			if (prefAtendidos < 2 && filaComPrioridade.quant > 0) {
-				pessoa = sairDaFila(&filaComPrioridade);
-				prefAtendidos++;
-			}
-			else if (filaSemPrioridade.quant > 0) { // Se não, atender não preferenciais se existir alguem na fila
-				pessoa = sairDaFila(&filaSemPrioridade);
-				prefAtendidos = 0;
-			}
-			else if (filaComPrioridade.quant > 0) { // Se não tiver ninguem na fila sem prioridade, atender prioridade
-				pessoa = sairDaFila(&filaComPrioridade);
-				prefAtendidos++;
-			}
-			else { // Ninguem sendo atendido
-				pessoa = NULL;
-			}
-
-			if (pessoa != NULL) { // Se houver alguem sendo atendido
-				printf("'%s' está sendo atendido no caixa %d\n", pessoa->nome, caixa);
-				caixas[caixa]++;
-			}
-			else { // Não há ninguem na fila
-				printf("Ninguém na fila\n");
-			}
+			atenderCliente(pessoa, &filaComPrioridade, &filaSemPrioridade, caixas);
 			break;
 
 
@@ -231,10 +254,7 @@ int main() {
 			break;
 		case 6: // Sair do sistema
 			limparConsole();
-			printf("Saindo...\n");
-			for (int i = 0; i < numCaixas; i++) {
-				printf("Caixa %d atendeu %d pessoas\n", i, caixas[i]);
-			}
+			finalizaExpediente(numCaixas, caixas);
 			// Liberar memoria utilizada
 			destruirFila(&filaComPrioridade);
 			destruirFila(&filaSemPrioridade);
