@@ -212,7 +212,7 @@ int main() {
 			break;
 
 
-		case 7: // Mostrar o tempo de espera e as pessoas que estão na frente
+		case 4: // Mostrar o tempo de espera e as pessoas que estão na frente
 			limparConsole();
 			printf("Digite o seu nome completo:");
 			fgets(nome, TAMANHOMAX_NOME, stdin);
