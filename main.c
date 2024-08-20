@@ -196,12 +196,11 @@ int main() {
 	for (int i = 0; i < numCaixas; i++)
 		caixas[i] = 0;
 
-	while (op != 5){
+	while (op != 4){
 		printf("1 - Adicionar pessoa na fila\n");
 		printf("2 - Remover pessoa da fila\n");
-		printf("3 - Exibir fila\n");
-		printf("4 - exibir previsão\n");
-    printf("5 - Sair\n");
+		printf("3 - exibir previsão\n");
+    printf("4 - Sair\n");
 		scanf("%d", &op);
 		limparConsole();
 
@@ -255,24 +254,16 @@ int main() {
 			  }
 			  break;
 
-		  case 3: // Exibir Fila
-			  printf("=========================\n");
-			  printf("Fila com prioridade: \n");
-			  exibirFila(&filaComPrioridade);
-			  printf("=========================\n");
-			  printf("Fila sem prioridade: \n");
-			  exibirFila(&filaSemPrioridade);
-			  printf("=========================\n");
-			  break;
+		 
 
 		  
-      case 4: // Mostrar o tempo de espera e as pessoas que estão na frente
+      case 3: // Mostrar o tempo de espera e as pessoas que estão na frente
         
         printf("Digite o seu nome completo:");
         fgets(nome, TAMANHOMAX_NOME, stdin);
         exibirPrevisao(&filaComPrioridade, &filaSemPrioridade, nome);
         break;
-			case 5: // Sair do sistema
+			case 4: // Sair do sistema
 			  for (int i = 0; i < numCaixas; i++){
 				  printf("Caixa %d atendeu %d pessoas\n", i, caixas[i]);
 			  }
