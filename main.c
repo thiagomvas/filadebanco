@@ -96,8 +96,6 @@ void exibirPrevisao(Fila* filaComPrioridade, Fila* filaSemPrioridade, char nome[
 }
 
 void atenderCliente(No *pessoa, Fila *filaComPrioridade, Fila *filaSemPrioridade,  int *caixas){
-	printf("Qual caixa estah chamando? ");
-	scanf("%d", &caixa);
 	limparConsole(); //Limpando a tela para exibição de dados.
 	
 	//Atende primeiramente os clientes que são prioridade na fila.
@@ -121,14 +119,16 @@ void atenderCliente(No *pessoa, Fila *filaComPrioridade, Fila *filaSemPrioridade
 	
 	
 	if(pessoa != NULL){//Foi encontrado um cliente.
+		printf("O caixa %d, está chamando!!!!\n", (caixa%5)+1);
 		if (pessoa->deficiente || pessoa->idade >= 60){
-			printf("'%s(prioridade)' está sendo atendido(a) no caixa %d\n", pessoa->nome, caixa);
+			printf("'%s(prioridade)' está sendo atendido(a) no caixa %d\n", pessoa->nome, (caixa%5)+1);
 		}
 		else{
-			printf("'%s' está sendo atendido(a) no caixa %d\n", pessoa->nome, caixa);
+			printf("'%s' está sendo atendido(a) no caixa %d\n", pessoa->nome, (caixa%5)+1);
 		}
-		caixas[caixa]++;
+		caixas[caixa % 5]++;
 		free(pessoa);
+		caixa++;
 	}
 	else{//Não foi encontrado o cliente.
 		printf("Não há alguém na fila para ser chamado\n");
@@ -158,9 +158,7 @@ int main() {
 	No* pessoa = NULL;
 
 
-	int numCaixas = 0;
-	printf("Numero de caixas: ");
-	scanf("%d", &numCaixas);
+	int numCaixas = 5;
 
 	int* caixas = (int*)malloc(sizeof(int) * numCaixas);
 
