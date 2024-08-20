@@ -45,6 +45,14 @@ void enfileirar(Fila* fila, No* pessoa) {
 		fila->quant++;
 	}
 }
+void cadastar(Fila* filaSemPrioridade,Fila* filaComPrioridade,No* pessoa){
+  if(pessoa->idade==60||pessoa->deficiente==1){//condição para ser prioridade
+    enfileirar(filaComPrioridade,pessoa);
+  }
+  else{
+    enfileirar(filaSemPrioridade,pessoa);
+  }
+}
 
 void exibirFila(Fila* fila) {
 	No* tempPessoa = fila->inicio;
