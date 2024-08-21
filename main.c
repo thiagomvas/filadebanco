@@ -145,6 +145,35 @@ void finalizaExpediente(int numeroCaixas, int *caixas){
 	printf("Total de clientes sem prioridade atendidos: %d.\n", totalUsual);
 }
 
+void exibirFilaCompleta(Fila* filaSemPrioridade, Fila* filaComPrioridade){
+    No* aux1=filaSemPrioridade->inicio;
+    No* aux2=filaComPrioridade->inicio;
+	if(prefAtendidos==1){
+		if(aux2!=NULL){
+			exibirPessoa(aux2);
+			aux2=aux2->prox;
+		}
+		if(aux1!=NULL){
+			exibirPessoa(aux1);
+			aux1=aux1->prox;
+		}
+	}
+	if (prefAtendidos==2 && aux1!=NULL){
+		exibirPessoa(aux1);
+		aux1=aux1->prox;
+	}
+    while(aux1!=NULL || aux2!=NULL){
+        for(int i=0;i<2&&aux2!=NULL;i++){
+            exibirPessoa(aux2);
+            aux2=aux2->prox;
+        }
+        if(aux1!=NULL){
+            exibirPessoa(aux1);
+            aux1=aux1->prox;
+        }
+    }
+}
+
 int main() {
 	srand(time(0)); // Gera uma seed aleatoria pro RNG
 
@@ -171,7 +200,7 @@ int main() {
 		printf("2 - Adicionar pessoa na fila (AUTOMATICO)\n");
 		printf("3 - Remover pessoa da fila\n");
 		printf("4 - Exibir previsão\n");
-		printf("5 - Exibir ambas filas separadas\n");
+		printf("5 - Exibir fila\n");
 		printf("6 - Sair\n");
 		scanf("%d", &op);
 
@@ -244,11 +273,8 @@ int main() {
 
 		case 5: // Exibir ambas as filas
 			limparConsole();
-			printf("Fila com prioridade ==================\n");
-			exibirFila(&filaComPrioridade);
-			printf("Fila sem prioridade ==================\n");
-			exibirFila(&filaSemPrioridade);
-			printf("======================================\n");
+			printf("Fila ==================\n");
+			exibirFilaCompleta(&filaSemPrioridade,&filaComPrioridade);
 			break;
 		case 6: // Sair do sistema
 			limparConsole();
