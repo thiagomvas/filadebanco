@@ -271,7 +271,7 @@ int main() {
 			exibirPrevisao(&filaComPrioridade, &filaSemPrioridade, nome);
 			break;
 
-		case 5: // Exibir ambas as filas
+		case 5: // Exibir a fila
 			limparConsole();
 			printf("Fila ==================\n");
 			exibirFilaCompleta(&filaSemPrioridade,&filaComPrioridade);
